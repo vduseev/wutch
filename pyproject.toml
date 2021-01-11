@@ -13,6 +13,8 @@ watchdog = "^1.0.2"
 ilexconf = "^0.9.5"
 loguru = "^0.5.3"
 beautifulsoup4 = "^4.9.3"
+aiohttp = "^3.7.3"
+aiofiles = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.19.0"

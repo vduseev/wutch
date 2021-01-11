@@ -1,14 +1,19 @@
-const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
-
-async function wutch() {
-  while (true) {
-    fetch("http://localhost:50231")
-      .then(response => response.json())
-      .then(response => {
-        if (response.status == "changed") {
-          window.location.reload();
+if ('WebSocket' in window) {
+    var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+    // var address = protocol + window.location.host + window.location.pathname + '/ws';
+    var address = protocol + window.location.host + '/ws';
+    var socket = new WebSocket(address);
+    socket.onmessage = function (msg) {
+        if (msg.data == 'reload') {
+            window.location.reload();
         }
-      });
-    await sleep(1000);
-  }
+        console.log("Message:", msg.data)
+    };
+    if (sessionStorage && !sessionStorage.getItem('WutchInitialized')) {
+        console.log('Wutch is enabled.');
+        sessionStorage.setItem('WutchInitialized', true);
+    }
+}
+else {
+    console.log('This browser does not support WebSocket technology required for live reloading. Falling back to HTTP fetch requests.');
 }

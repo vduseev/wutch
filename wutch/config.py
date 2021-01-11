@@ -25,8 +25,8 @@ class Config(ilexconf.Config):
         # The file to be opened in the browser after program start.
         file=None,
         # Which host and port to bind the internal HTTP server to.
-        host="0.0.0.0",
-        port=50231,
+        host="localhost",
+        port=5010,
         # In which directory to put the special page refreshing
         # javascript file.
         js_dir=".",
@@ -62,7 +62,7 @@ class Config(ilexconf.Config):
             prog="wutch",
             description=(
                 "Watches specified directories for the changes in files "
-                "mathing given patterns and runs a command each time. "
+                "mathing given patterns and runs a shell command each time. "
                 "Opens/refreshes the webpage after the command is done."
             ),
         )
