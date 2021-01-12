@@ -1,4 +1,3 @@
-import threading
 import time
 
 from loguru import logger
@@ -6,10 +5,11 @@ from watchdog.observers import Observer
 from watchdog.tricks import ShellCommandTrick
 from watchdog.utils import WatchdogShutdown
 
+from .threaded import Threaded
 from .events import Event
 
 
-class Watcher:
+class Watcher(Threaded):
     def __init__(self, config, dispatcher) -> None:
 
         super().__init__()
@@ -20,10 +20,9 @@ class Watcher:
         for pathname in set(config.dirs):
             self.observer.schedule(self.handler, pathname, recursive=True)
 
-    def start(self, thread_lock: threading.Lock = threading.Lock()):
+    def start(self):
 
         logger.debug("Starting observer thread")
-        self.handler.lock = thread_lock
         self.observer.start()
         logger.debug("Observer thred started")
 
@@ -40,7 +39,6 @@ class FileChangeHandler(ShellCommandTrick):
 
         self.config = config
         self.dispatcher = dispatcher
-        self.lock = threading.Lock()
         self.cooldown_timer = time.time()
         super().__init__(
             shell_command=config.command,
@@ -54,27 +52,26 @@ class FileChangeHandler(ShellCommandTrick):
     def on_any_event(self, event):
 
         command_result = None
-        with self.lock:
 
-            timeout = time.time() - self.cooldown_timer
-            if timeout < self.config.watcher_cooldown:
-                logger.debug(f"Ignoring watcher event because less time passed then specified in cooldown: {timeout:.2f} < {self.config.watcher_cooldown:.2f}")
-                return None
+        timeout = time.time() - self.cooldown_timer
+        if timeout < self.config.cooldown:
+            logger.debug(f"Ignoring watcher event because less time passed then specified in cooldown: {timeout:.2f} < {self.config.cooldown:.2f}")
+            return None
 
-            # Report event processing
-            logger.debug(f"Processing event {event}.")
+        # Report event processing
+        logger.debug(f"Processing event {event}.")
 
-            # Run shell command
-            try:
-                command_result = super().on_any_event(event)
-            except Exception as e:
-                logger.error(f"{e}")
-            logger.debug(f"Shell command executed with result: {command_result}.")
+        # Run shell command
+        try:
+            command_result = super().on_any_event(event)
+        except Exception as e:
+            logger.error(f"{e}")
+        logger.debug(f"Shell command executed with result: {command_result}.")
 
-            # Register file changed event
-            self.dispatcher.report(Event.ShellCommandFinished)
+        # Register file changed event
+        self.dispatcher.report(Event.ShellCommandFinished)
 
-            # Remember current time for cooldown timer
-            self.cooldown_timer = time.time()
+        # Remember current time for cooldown timer
+        self.cooldown_timer = time.time()
 
         return command_result

@@ -18,30 +18,23 @@ class Config(ilexconf.Config):
         # get changed.
         command="sphinx-build",
         # In which directory HTML files built by shell command will appear.
-        build_dirs=["."],
+        build_dir=".",
         # File patterns which should be injected with page refreshing
         # javascript.
-        inject_patterns=["*.html"],
-        # The file to be opened in the browser after program start.
+        inject_patterns=["*.htm*"],
+        # Path to file to be opened by webbrowser relative to build_dir.
         file=None,
         # Which host and port to bind the internal HTTP server to.
         host="localhost",
         port=5010,
-        # In which directory to put the special page refreshing
-        # javascript file.
-        js_dir=".",
-        # How many seconds to wait after the shell command before telling
-        # the webpage to refresh.
-        wait=1,
         # Which action to run in the CLI app.
         # "run" all together, "inject" to inject rendered HTML files with
         # page refreshing javascript, "watch", and "serve".
         action="run",
-        actions=["run", "watch", "serve", "inject"],
-        # Cooldown periods after which the command does not run again and ignores events
+        actions=["run", "watch", "serve"],
+        # Cooldown period after which the command does not run again and ignores events
         # that trigger it.
-        injector_cooldown=1,
-        watcher_cooldown=3,
+        cooldown=3,
     )
 
     def __init__(self):
