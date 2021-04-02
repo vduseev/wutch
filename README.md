@@ -10,6 +10,11 @@ It will also open a browser window pointing to the build directory and inject
 every built webpage with a code that will auto-refresh that page after each
 rebuild.
 
+<p>
+    <a href="https://pypi.org/project/wutch/"><img alt="PyPI" src="https://img.shields.io/pypi/v/wutch?color=blue&logo=pypi"></a>
+    <a href='https://wutch.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/wutch/badge/?version=latest' alt='Documentation Status' /></a>
+</p>
+
 ## Installation
 
 ```shell
