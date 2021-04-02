@@ -17,7 +17,7 @@ from . import js
 
 class Server(Threaded):
     def __init__(self, config, dispatcher: EventDispatcher) -> None:
-        
+
         self.config = config
         self.dispatcher = dispatcher
         self.injection_script = pkg_resources.read_text(js, "wutch.js")
@@ -36,13 +36,14 @@ class Server(Threaded):
         )
 
     def start(self):
-        
+
         self.thread.start()
         # Submit server running task to the event loop
-        asyncio.run_coroutine_threadsafe(self._start_async_runner(), self.event_loop)
+        asyncio.run_coroutine_threadsafe(
+            self._start_async_runner(), self.event_loop)
         logger.debug("Server thread started")
 
-        if self.config.file:
+        if self.config.index and not self.config.no_browser:
             self._open_browser()
 
     def stop(self):
@@ -61,7 +62,7 @@ class Server(Threaded):
         # Identify path of the requested file
         file = request.match_info["file"]
         logger.debug(f"Handling request: {file}")
-        path = pathlib.Path(self.config.build_dir) / file
+        path = pathlib.Path(self.config.build) / file
 
         if not path.exists() or not path.is_file():
             logger.error(f"File {path} not found or is not a file")
@@ -69,7 +70,7 @@ class Server(Threaded):
 
         if "htm" in path.suffix.lower():
             return await self._load(path, content_type="text/html", content_modifier=self._inject_script)
-       
+
         elif "css" in path.suffix.lower():
             return await self._load(path, content_type="text/css")
 
@@ -114,7 +115,7 @@ class Server(Threaded):
             contents = content_modifier(contents)
 
         # Return web response
-        return web.Response(body=contents, content_type=content_type)        
+        return web.Response(body=contents, content_type=content_type)
 
     def _inject_script(self, contents):
 
@@ -128,5 +129,6 @@ class Server(Threaded):
 
     def _open_browser(self):
 
-        url = f"http://{self.config.host}:{self.config.port}/{self.config.file}"
+        url = f"http://{self.config.host}:{self.config.port}/{self.config.index}"
+        logger.debug(f"Opening browser at: {url}")
         webbrowser.open_new_tab(url)

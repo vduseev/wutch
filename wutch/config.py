@@ -9,7 +9,7 @@ class Config(ilexconf.Config):
         # Directories to watch for the file changes.
         dirs=["."],
         # Directories to ignore during watching for file changes.
-        ignore_dirs=[],
+        ignore_dirs=["_build", "build"],
         # File patterns to watch for changes.
         patterns=["*"],
         # File patterns to ignore.
@@ -18,23 +18,22 @@ class Config(ilexconf.Config):
         # get changed.
         command="sphinx-build",
         # In which directory HTML files built by shell command will appear.
-        build_dir=".",
+        build="_build",
         # File patterns which should be injected with page refreshing
         # javascript.
         inject_patterns=["*.htm*"],
-        # Path to file to be opened by webbrowser relative to build_dir.
-        file=None,
+        # Path to file to be opened by webbrowser relative to build.
+        index="index.html",
         # Which host and port to bind the internal HTTP server to.
         host="localhost",
         port=5010,
-        # Which action to run in the CLI app.
-        # "run" all together, "inject" to inject rendered HTML files with
-        # page refreshing javascript, "watch", and "serve".
-        action="run",
-        actions=["run", "watch", "serve"],
         # Cooldown period after which the command does not run again and ignores events
         # that trigger it.
-        cooldown=3,
+        wait=3,
+        # Do not open browser after launch of wutch.
+        no_browser=False,
+        # Do not start a webserver.
+        no_server=False,
     )
 
     def __init__(self):
@@ -42,7 +41,7 @@ class Config(ilexconf.Config):
         super().__init__(
             self.defaults,
             ilexconf.from_json("wutch.cfg", ignore_errors=False),
-            ilexconf.from_env(prefix="WUTCH", separator="_"),
+            ilexconf.from_env(prefix="WUTCH_"),
             ilexconf.from_argparse(self._parse_arguments()),
         )
 
@@ -58,13 +57,6 @@ class Config(ilexconf.Config):
                 "mathing given patterns and runs a shell command each time. "
                 "Opens/refreshes the webpage after the command is done."
             ),
-        )
-        parser.add_argument(
-            "action",
-            help=f"Action to perform. Defaults to: {Config.defaults.action}.",
-            nargs="?",
-            type=str,
-            choices=Config.defaults.actions,
         )
         parser.add_argument(
             "-c",
@@ -108,9 +100,8 @@ class Config(ilexconf.Config):
         )
         parser.add_argument(
             "-b",
-            "--build-dirs",
-            help=f"Build directories containing files to render in the browser (separated by ' '). Defaults to: {Config.defaults.build_dirs}.",
-            nargs="*",
+            "--build",
+            help=f"Build directory containing files to render in the browser. Defaults to: {Config.defaults.build}.",
             type=str,
         )
         parser.add_argument(
@@ -121,15 +112,9 @@ class Config(ilexconf.Config):
             type=str,
         )
         parser.add_argument(
-            "-j",
-            "--js-dir",
-            help=f"Directory where server pooling JS script will be placed. Defaults to: '{Config.defaults.js_dir}'.",
-            type=str,
-        )
-        parser.add_argument(
-            "-f",
-            "--file",
-            help=f"The HTML file provided with this flag will be opened in the browser with the start of the watcher. Defaults to: {Config.defaults.file}.",
+            "-i",
+            "--index",
+            help=f"File that will be opened in the browser with the start of the watcher. Defaults to: {Config.defaults.index}.",
             type=str,
         )
         parser.add_argument(
@@ -141,6 +126,18 @@ class Config(ilexconf.Config):
             "--port",
             help=f"TCP port to bind internal HTTP server to. Defaults to: {Config.defaults.port}.",
             type=int,
+        )
+        parser.add_argument(
+            "-B",
+            "--no-browser",
+            help=f"Do not open browser at wutch launch. Defaults to: {Config.defaults.no_browser}.",
+            action="store_true"
+        )
+        parser.add_argument(
+            "-S",
+            "--no-server",
+            help=f"Do not start the webserver, just launch the shell command. Defaults to: {Config.defaults.no_server}.",
+            action="store_true"
         )
 
         return parser.parse_args()

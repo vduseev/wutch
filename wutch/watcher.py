@@ -3,7 +3,6 @@ import time
 from loguru import logger
 from watchdog.observers import Observer
 from watchdog.tricks import ShellCommandTrick
-from watchdog.utils import WatchdogShutdown
 
 from .threaded import Threaded
 from .events import Event
@@ -54,8 +53,9 @@ class FileChangeHandler(ShellCommandTrick):
         command_result = None
 
         timeout = time.time() - self.cooldown_timer
-        if timeout < self.config.cooldown:
-            logger.debug(f"Ignoring watcher event because less time passed then specified in cooldown: {timeout:.2f} < {self.config.cooldown:.2f}")
+        if timeout < self.config.wait:
+            logger.debug(
+                f"Ignoring watcher event because less time passed then specified in cooldown: {timeout:.2f} < {self.config.wait:.2f}")
             return None
 
         # Report event processing

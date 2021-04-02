@@ -1,10 +1,10 @@
 from .app import WutchApplication
 
 
-__version__ = "0.1.1"
+__version__ = "1.0.1"
 
 
-def launch_cli():
+def cli():
     """Script invokation function used by poetry."""
 
     wutch_app = WutchApplication()
@@ -15,4 +15,4 @@ if __name__ == "__main__":
     # This gets launched if the wutch package is invoked as a python script:
     #   python -m wutch
     #   python wutch/__init__.py
-    launch_cli()
+    cli()
