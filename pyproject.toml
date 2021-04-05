@@ -4,12 +4,12 @@ description = "Watch and rebuild your files like LiveServer"
 documentation = "https://wutch.readthedocs.io"
 homepage = "https://github.com/vduseev/wutch"
 keywords = ["liveserver", "sphinx", "rebuild", "watcher", "watchdog"]
-license = "Apache 2"
+license = "Apache-2.0"
 maintainers = ["vduseev <vagiz@duseev.com>"]
 name = "wutch"
 readme = "README.md"
 repository = "https://github.com/vduseev/wutch"
-version = "1.0.3"
+version = "1.0.4"
 
 [tool.poetry.scripts]
 wutch = "wutch:cli"

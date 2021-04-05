@@ -18,7 +18,7 @@ class Config(ilexconf.Config):
         # get changed.
         command="sphinx-build",
         # In which directory HTML files built by shell command will appear.
-        build="_build",
+        build="_build/html",
         # File patterns which should be injected with page refreshing
         # javascript.
         inject_patterns=["*.htm*"],
@@ -29,7 +29,7 @@ class Config(ilexconf.Config):
         port=5010,
         # Cooldown period after which the command does not run again and ignores events
         # that trigger it.
-        wait=3,
+        wait=1,
         # Do not open browser after launch of wutch.
         no_browser=False,
         # Do not start a webserver.

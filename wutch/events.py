@@ -4,9 +4,7 @@ from loguru import logger
 
 
 class Event(Enum):
-    FileChanged = 1
-    ShellCommandFinished = 2
-    JSInjectFinished = 3
+    ShellCommandFinished = 1
 
 
 class EventDispatcher(list):
