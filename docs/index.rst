@@ -18,6 +18,8 @@ rebuild.
       <a href='https://wutch.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/wutch/badge/?version=latest' alt='Documentation Status' /></a>
    </p>
 
+.. image:: https://github.com/vduseev/wutch/raw/master/docs/_static/wutch-demo.gif
+
 Installation
 ------------
 
