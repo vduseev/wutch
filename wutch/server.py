@@ -64,9 +64,13 @@ class Server(Threaded):
         logger.debug(f"Handling request: {file}")
         path = pathlib.Path(self.config.build) / file
 
-        if not path.exists() or not path.is_file():
-            logger.error(f"File {path} not found or is not a file")
+        if not path.exists():
+            logger.error(f"File {path} not found")
             raise web.HTTPNotFound()
+
+        elif path.is_dir():
+            file_path = path / "index.html"
+            return await self._load(file_path, content_type="text/html", content_modifier=self._inject_script)
 
         if "htm" in path.suffix.lower():
             return await self._load(path, content_type="text/html", content_modifier=self._inject_script)
