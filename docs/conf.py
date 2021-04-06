@@ -13,7 +13,6 @@
 from datetime import datetime
 import os
 import sys
-from ..wutch import __version__
 
 sys.path.insert(0, os.path.abspath("."))
 
@@ -24,7 +23,7 @@ copyright = f"{datetime.now().year}, Vagiz Duseev"
 author = "Vagiz Duseev"
 
 # Short version
-version = __version__
+version = "1.0.6"
 # The full version, including alpha/beta/rc tags
 release = version
 
