@@ -40,7 +40,7 @@ class Config(ilexconf.Config):
 
         super().__init__(
             self.defaults,
-            ilexconf.from_json("wutch.cfg", ignore_errors=False),
+            ilexconf.from_json("wutch.cfg", ignore_errors=True),
             ilexconf.from_env(prefix="WUTCH_"),
             ilexconf.from_argparse(self._parse_arguments()),
         )
