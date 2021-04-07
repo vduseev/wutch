@@ -44,7 +44,7 @@ class Server(Threaded):
         logger.debug("Server thread started")
 
         if self.config.index and not self.config.no_browser:
-            self._open_browser()
+            self.open_browser()
 
     def stop(self):
 
@@ -97,7 +97,7 @@ class Server(Threaded):
                 await ws.send_str("reload")
                 logger.debug("Reload message sent via websocket")
 
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.5)
 
         return ws
 
@@ -131,7 +131,7 @@ class Server(Threaded):
         contents = soup.prettify()
         return contents.encode("utf-8")
 
-    def _open_browser(self):
+    def open_browser(self):
 
         url = f"http://{self.config.host}:{self.config.port}/{self.config.index}"
         logger.debug(f"Opening browser at: {url}")

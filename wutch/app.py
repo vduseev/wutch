@@ -1,3 +1,5 @@
+import sys
+
 from loguru import logger
 
 from .config import Config
@@ -20,7 +22,9 @@ class WutchApplication:
         self.config = Config()
         threads = []
 
-        logger.configure()
+        level = self.config.verbosity[self.config.verbose]
+        logger.remove()
+        logger.add(sys.stderr, level=level)
 
         watcher = Watcher(self.config, self.dispatcher)
         threads.append(watcher)

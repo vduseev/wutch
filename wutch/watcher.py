@@ -1,6 +1,7 @@
 import time
 
 from loguru import logger
+from watchdog.events import FileModifiedEvent
 from watchdog.observers import Observer
 from watchdog.tricks import ShellCommandTrick
 
@@ -23,6 +24,7 @@ class Watcher(Threaded):
 
         logger.debug("Starting observer thread")
         self.observer.start()
+        self.handler.on_any_event(FileModifiedEvent(self.config.dirs[0]))
         logger.debug("Observer thred started")
 
     def stop(self):
@@ -38,7 +40,7 @@ class FileChangeHandler(ShellCommandTrick):
 
         self.config = config
         self.dispatcher = dispatcher
-        self.cooldown_timer = time.time()
+        self.cooldown_timer = 0
         super().__init__(
             shell_command=config.command,
             patterns=config.patterns,
@@ -52,14 +54,14 @@ class FileChangeHandler(ShellCommandTrick):
 
         command_result = None
 
+        # Report event processing
+        logger.debug(f"Processing event {event}.")
+
         timeout = time.time() - self.cooldown_timer
         if timeout < self.config.wait:
             logger.debug(
                 f"Ignoring watcher event because less time passed then specified in cooldown: {timeout:.2f} < {self.config.wait:.2f}")
             return None
-
-        # Report event processing
-        logger.debug(f"Processing event {event}.")
 
         # Run shell command
         try:

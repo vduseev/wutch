@@ -34,6 +34,15 @@ class Config(ilexconf.Config):
         no_browser=False,
         # Do not start a webserver.
         no_server=False,
+        # Log verbosity
+        verbose=0,
+        # Log levels
+        verbosity={
+            0: "ERROR",
+            1: "WARNING",
+            2: "INFO",
+            3: "DEBUG",
+        }
     )
 
     def __init__(self):
@@ -44,8 +53,6 @@ class Config(ilexconf.Config):
             ilexconf.from_env(prefix="WUTCH_"),
             ilexconf.from_argparse(self._parse_arguments()),
         )
-
-        logger.debug(f"{self}")
 
     @staticmethod
     def _parse_arguments():
@@ -138,6 +145,12 @@ class Config(ilexconf.Config):
             "--no-server",
             help=f"Do not start the webserver, just launch the shell command. Defaults to: {Config.defaults.no_server}.",
             action="store_true"
+        )
+        parser.add_argument(
+            "-v",
+            "--verbose",
+            help=f"Log verbosity. Has four levels: error, wargning, info, and debug. Can be stacked: -v (for warning) or -vvv (for debug).",
+            action="count",
         )
 
         return parser.parse_args()

@@ -13,7 +13,6 @@ class EventDispatcher(list):
 
         self.append(event)
         logger.debug(f"New {event} event has been reported.")
-        logger.debug(f"Events: {self}")
 
     def claim(self, event):
         """Claim all events of certain type."""
@@ -28,6 +27,5 @@ class EventDispatcher(list):
             logger.debug(
                 f"{len(claimed)} {event} events have been claimed from the dispatcher."
             )
-            logger.debug(f"Events: {self}")
 
         return claimed
