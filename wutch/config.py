@@ -1,7 +1,9 @@
-import ilexconf
 import argparse
 
+import ilexconf
 from loguru import logger
+
+from .version import __version__
 
 
 class Config(ilexconf.Config):
@@ -60,9 +62,10 @@ class Config(ilexconf.Config):
         parser = argparse.ArgumentParser(
             prog="wutch",
             description=(
-                "Watches specified directories for the changes in files "
-                "mathing given patterns and runs a shell command each time. "
-                "Opens/refreshes the webpage after the command is done."
+                f"wutch ({__version__}) watches directories for "
+                "the changes in files matching given patterns and runs a "
+                "shell command on each change. It also opens/refreshes a "
+                "webpage after the command is executed."
             ),
         )
         parser.add_argument(
@@ -151,6 +154,13 @@ class Config(ilexconf.Config):
             "--verbose",
             help=f"Log verbosity. Has four levels: error, wargning, info, and debug. Can be stacked: -v (for warning) or -vvv (for debug).",
             action="count",
+        )
+        parser.add_argument(
+            "-V",
+            "--version",
+            help="Display version of the wutch.",
+            action="version",
+            version=f"{__version__}",
         )
 
         return parser.parse_args()

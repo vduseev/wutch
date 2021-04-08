@@ -1,7 +1,5 @@
 from .app import WutchApplication
-
-
-__version__ = "1.0.7"
+from .version import __version__
 
 
 def cli():
