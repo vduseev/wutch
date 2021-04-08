@@ -42,7 +42,7 @@ By default, ``wutch`` will:
 
 .. code-block:: bash
 
-   $ wutch
+   $ wutch -vvv
 
    2021-04-02 23:47:06.216 | DEBUG    | wutch.config:__init__:48 - Config{'dirs': ['docs'], 'ignore_dirs': [], 'patterns': ['*.rst', '*.py'], 'ignore_patterns': [], 'command': 'make -C docs rebuild', 'build': 'docs/_build/html', 'inject_patterns': ['*.html'], 'index': 'index.html', 'host': 'localhost', 'port': 5010, 'wait': 3, 'no_browser': False, 'no_server': False}
    2021-04-02 23:47:06.217 | DEBUG    | wutch.watcher:start:24 - Starting observer thread
@@ -69,28 +69,28 @@ Parameters
 
    -h, --help            show this help message and exit
    -c COMMAND, --command COMMAND
-                           Shell command executed in response to file changes. Defaults to: sphinx-build.
+                         Shell command executed in response to file changes. Defaults to: sphinx-build.
    -p [PATTERNS ...], --patterns [PATTERNS ...]
-                           Matches paths with these patterns (separated by ' '). Defaults to: ['*'].
+                         Matches paths with these patterns (separated by ' '). Defaults to: ['*'].
    -P [IGNORE_PATTERNS ...], --ignore-patterns [IGNORE_PATTERNS ...]
-                           Ignores file changes in these patterns (separated by ' '). Defaults to: [].
+                         Ignores file changes in these patterns (separated by ' '). Defaults to: [].
    -d [DIRS ...], --dirs [DIRS ...]
-                           Directories to watch (separated by ' '). Defaults to: ['.'].
+                         Directories to watch (separated by ' '). Defaults to: ['.'].
    -D [IGNORE_DIRS ...], --ignore-dirs [IGNORE_DIRS ...]
-                           Ignore file changes in these directories (separated by ' '). Defaults to: ['_build', 'build'].
-   -w WAIT, --wait WAIT  Wait N seconds after the command is finished before refreshing the web page. Defaults to: 3.
+                         Ignore file changes in these directories (separated by ' '). Defaults to: ['_build', 'build'].
+   -w WAIT, --wait WAIT  Wait N seconds after the command is finished before refreshing the web page. Defaults to: 1.
    -b BUILD, --build BUILD
-                           Build directory containing files to render in the browser. Defaults to: _build.
+                         Build directory containing files to render in the browser. Defaults to: _build/html.
    -I [INJECT_PATTERNS ...], --inject-patterns [INJECT_PATTERNS ...]
-                           Patterns of files to inject with JS code that refreshes them on rebuild (separated by ' '). Defaults to: ['*.htm*'].
+                         Patterns of files to inject with JS code that refreshes them on rebuild (separated by ' '). Defaults to: ['*.htm*'].
    -i INDEX, --index INDEX
-                           File that will be opened in the browser with the start of the watcher. Defaults to: index.html.
+                         File that will be opened in the browser with the start of the watcher. Defaults to: index.html.
    --host HOST           Host to bind internal HTTP server to. Defaults to: localhost.
    --port PORT           TCP port to bind internal HTTP server to. Defaults to: 5010.
-   -B NO_BROWSER, --no-browser NO_BROWSER
-                           Do not open browser at wutch launch. Defaults to: False.
-   -S NO_SERVER, --no-server NO_SERVER
-                           Do not start the webserver, just launch the shell command. Defaults to: False.
+   -B, --no-browser      Do not open browser at wutch launch. Defaults to: False.
+   -S, --no-server       Do not start the webserver, just launch the shell command. Defaults to: False.
+   -v, --verbose         Log verbosity. Has four levels: error, wargning, info, and debug. Can be stacked: -v (for warning) or -vvv (for debug).
+   -V, --version         Display version of the wutch.
 
 
 Loading order
