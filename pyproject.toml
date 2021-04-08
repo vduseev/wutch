@@ -9,7 +9,7 @@ maintainers = ["vduseev <vagiz@duseev.com>"]
 name = "wutch"
 readme = "README.md"
 repository = "https://github.com/vduseev/wutch"
-version = "1.0.8"
+version = "1.0.9"
 
 [tool.poetry.scripts]
 wutch = "wutch:cli"

@@ -23,7 +23,7 @@ copyright = f"{datetime.now().year}, Vagiz Duseev"
 author = "Vagiz Duseev"
 
 # Short version
-version = "1.0.8"
+version = "1.0.9"
 # The full version, including alpha/beta/rc tags
 release = version
 
