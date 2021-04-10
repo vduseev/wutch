@@ -25,7 +25,7 @@ class Watcher(Threaded):
         logger.debug("Starting observer thread")
         self.observer.start()
         self.handler.on_any_event(FileModifiedEvent(self.config.dirs[0]))
-        logger.debug("Observer thred started")
+        logger.debug("Observer thread started")
 
     def stop(self):
 
@@ -46,6 +46,7 @@ class FileChangeHandler(ShellCommandTrick):
             shell_command=config.command,
             patterns=config.patterns,
             ignore_patterns=config.ignore_patterns,
+            ignore_directories=config.ignore_directories,
             wait_for_process=True,
             drop_during_process=True,
         )

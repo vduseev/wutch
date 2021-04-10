@@ -36,6 +36,8 @@ class WutchApplication:
                 directory = path.parent
                 os.chdir(directory)
 
+        logger.debug(self.config)
+
         threads = []
 
         level = self.config.verbosity[self.config.verbose]

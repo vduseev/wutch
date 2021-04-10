@@ -14,6 +14,8 @@ class Config(ilexconf.Config):
         patterns=["*"],
         # File patterns to ignore.
         ignore_patterns=["_build/", "build/"],
+        # Ignore changes of directories themselves
+        ignore_directories=False,
         # Shell command to run each time files in the watched directories
         # get changed.
         command="sphinx-build",
