@@ -1,6 +1,9 @@
+import os
 import sys
+from pathlib import Path
 
 from loguru import logger
+import ilexconf
 
 from .config import Config
 from .server import Server
@@ -20,6 +23,19 @@ class WutchApplication:
         # Initialize config (will parse arguments and throw SystemExit if
         # something like flag '--help' is used).
         self.config = Config()
+
+        # Load different config file if provided
+        if self.config.config:
+            path = Path(self.config.config)
+            # Only load if it's a correct different file
+            if path.is_file() and path != Path(Config.defaults.config) and path.name == "wutch.cfg":
+                different_config = ilexconf.from_json(path)
+                self.config.merge(different_config)
+
+                # Change context directory
+                directory = path.parent
+                os.chdir(directory)
+
         threads = []
 
         level = self.config.verbosity[self.config.verbose]

@@ -44,20 +44,45 @@ By default, ``wutch`` will:
 
    $ wutch -vvv
 
-   2021-04-02 23:47:06.216 | DEBUG    | wutch.config:__init__:48 - Config{'dirs': ['docs'], 'ignore_dirs': [], 'patterns': ['*.rst', '*.py'], 'ignore_patterns': [], 'command': 'make -C docs rebuild', 'build': 'docs/_build/html', 'inject_patterns': ['*.html'], 'index': 'index.html', 'host': 'localhost', 'port': 5010, 'wait': 3, 'no_browser': False, 'no_server': False}
-   2021-04-02 23:47:06.217 | DEBUG    | wutch.watcher:start:24 - Starting observer thread
-   2021-04-02 23:47:06.219 | DEBUG    | wutch.watcher:start:26 - Observer thred started
-   2021-04-02 23:47:06.220 | DEBUG    | wutch.server:start:44 - Server thread started
-   2021-04-02 23:47:06.220 | DEBUG    | wutch.server:_open_browser:133 - Opening browser at: http://localhost:5010/index.html
+   2021-04-10 12:33:16.367 | DEBUG    | wutch.watcher:start:25 - Starting observer thread
+   2021-04-10 12:33:16.368 | DEBUG    | wutch.watcher:on_any_event:58 - Processing event <FileModifiedEvent: event_type=modified, src_path='docs', is_directory=False>.
+   rm -rf "_build"
+   #@poetry run sphinx-build -M build "." "_build"
+   Running Sphinx v3.5.3
+   loading translations [en]... done
+   making output directory... done
+   building [mo]: targets for 0 po files that are out of date
+   building [html]: targets for 1 source files that are out of date
+   updating environment: [new config] 1 added, 0 changed, 0 removed
+   reading sources... [100%] index
+   looking for now-outdated files... none found
+   pickling environment... done
+   checking consistency... done
+   preparing documents... done
+   writing output... [100%] index
+   generating indices... genindex done
+   writing additional pages... search done
+   copying static files... done
+   copying extra files... done
+   dumping search index in English (code: en)... done
+   dumping object inventory... done
+   build succeeded.
+
+   The HTML pages are in _build/html.
+   2021-04-10 12:33:17.627 | DEBUG    | wutch.watcher:on_any_event:71 - Shell command executed with result: None.
+   2021-04-10 12:33:17.627 | DEBUG    | wutch.events:report:15 - New Event.ShellCommandFinished event has been reported.
+   2021-04-10 12:33:17.627 | DEBUG    | wutch.watcher:start:28 - Observer thred started
+   2021-04-10 12:33:17.628 | DEBUG    | wutch.server:start:44 - Server thread started
+   2021-04-10 12:33:17.628 | DEBUG    | wutch.server:open_browser:137 - Opening browser at: http://localhost:5010/index.html
 
 Stop wutch by pressing Ctrl+C key sequence.
 
 .. code-block:: bash
 
-   ^C2021-04-02 23:47:25.283 | DEBUG    | wutch.threaded:run:28 - Stopping all threads on KeyboardInterrupt
-   2021-04-02 23:47:25.283 | DEBUG    | wutch.watcher:stop:30 - Stopping observer thread
-   2021-04-02 23:47:26.260 | DEBUG    | wutch.watcher:stop:33 - Observer thread stopped
-   2021-04-02 23:47:26.260 | DEBUG    | wutch.server:stop:58 - Server thread stopped
+   ^C2021-04-10 12:33:28.396 | DEBUG    | wutch.threaded:run:28 - Stopping all threads on KeyboardInterrupt
+   2021-04-10 12:33:28.397 | DEBUG    | wutch.watcher:stop:32 - Stopping observer thread
+   2021-04-10 12:33:28.560 | DEBUG    | wutch.watcher:stop:35 - Observer thread stopped
+   2021-04-10 12:33:28.560 | DEBUG    | wutch.server:stop:58 - Server thread stopped
 
 Configuration
 -------------
@@ -69,22 +94,22 @@ Parameters
 
    -h, --help            show this help message and exit
    -c COMMAND, --command COMMAND
-                         Shell command executed in response to file changes. Defaults to: sphinx-build.
-   -p [PATTERNS ...], --patterns [PATTERNS ...]
-                         Matches paths with these patterns (separated by ' '). Defaults to: ['*'].
-   -P [IGNORE_PATTERNS ...], --ignore-patterns [IGNORE_PATTERNS ...]
-                         Ignores file changes in these patterns (separated by ' '). Defaults to: [].
+                     Shell command executed in response to file changes. Defaults to: sphinx-build.
+   -C CONFIG, --config CONFIG
+                     Path to the wutch config file. Defaults to: wutch.cfg.
    -d [DIRS ...], --dirs [DIRS ...]
-                         Directories to watch (separated by ' '). Defaults to: ['.'].
-   -D [IGNORE_DIRS ...], --ignore-dirs [IGNORE_DIRS ...]
-                         Ignore file changes in these directories (separated by ' '). Defaults to: ['_build', 'build'].
+                     Directories to watch (separated by ' '). Defaults to: ['.'].
+   -p [PATTERNS ...], --patterns [PATTERNS ...]
+                     Matches paths with these patterns (separated by ' '). Defaults to: ['*'].
+   -P [IGNORE_PATTERNS ...], --ignore-patterns [IGNORE_PATTERNS ...]
+                     Ignores changes in files that match these patterns (separated by ' '). Defaults to: ['_build/', 'build/'].
    -w WAIT, --wait WAIT  Wait N seconds after the command is finished before refreshing the web page. Defaults to: 1.
    -b BUILD, --build BUILD
-                         Build directory containing files to render in the browser. Defaults to: _build/html.
+                     Build directory containing files to render in the browser. Defaults to: _build/html.
    -I [INJECT_PATTERNS ...], --inject-patterns [INJECT_PATTERNS ...]
-                         Patterns of files to inject with JS code that refreshes them on rebuild (separated by ' '). Defaults to: ['*.htm*'].
+                     Patterns of files to inject with JS code that refreshes them on rebuild (separated by ' '). Defaults to: ['*.htm*'].
    -i INDEX, --index INDEX
-                         File that will be opened in the browser with the start of the watcher. Defaults to: index.html.
+                     File that will be opened in the browser with the start of the watcher. Defaults to: index.html.
    --host HOST           Host to bind internal HTTP server to. Defaults to: localhost.
    --port PORT           TCP port to bind internal HTTP server to. Defaults to: 5010.
    -B, --no-browser      Do not open browser at wutch launch. Defaults to: False.
@@ -141,9 +166,8 @@ Wutch documentation is developed using ``wutch`` and this config below.
 
    {
       "dirs": ["docs"],
-      "ignore_dirs": [],
       "patterns": ["*.rst", "*.py"],
-      "ignore_patterns": [],
+      "ignore_patterns": ["docs/_build/"],
       "command": "make -C docs rebuild",
       "build": "docs/_build/html",
       "inject_patterns": ["*.html"],

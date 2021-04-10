@@ -41,11 +41,11 @@ class FileChangeHandler(ShellCommandTrick):
         self.config = config
         self.dispatcher = dispatcher
         self.cooldown_timer = 0
+
         super().__init__(
             shell_command=config.command,
             patterns=config.patterns,
             ignore_patterns=config.ignore_patterns,
-            ignore_directories=config.ignore_dirs,
             wait_for_process=True,
             drop_during_process=True,
         )

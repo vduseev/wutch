@@ -10,15 +10,15 @@ class Config(ilexconf.Config):
     defaults = ilexconf.Config(
         # Directories to watch for the file changes.
         dirs=["."],
-        # Directories to ignore during watching for file changes.
-        ignore_dirs=["_build", "build"],
         # File patterns to watch for changes.
         patterns=["*"],
         # File patterns to ignore.
-        ignore_patterns=[],
+        ignore_patterns=["_build/", "build/"],
         # Shell command to run each time files in the watched directories
         # get changed.
         command="sphinx-build",
+        # Path to the wutch config file
+        config="wutch.cfg",
         # In which directory HTML files built by shell command will appear.
         build="_build/html",
         # File patterns which should be injected with page refreshing
@@ -51,7 +51,7 @@ class Config(ilexconf.Config):
 
         super().__init__(
             self.defaults,
-            ilexconf.from_json("wutch.cfg", ignore_errors=True),
+            ilexconf.from_json(Config.defaults.config, ignore_errors=True),
             ilexconf.from_env(prefix="WUTCH_"),
             ilexconf.from_argparse(self._parse_arguments()),
         )
@@ -75,17 +75,9 @@ class Config(ilexconf.Config):
             type=str,
         )
         parser.add_argument(
-            "-p",
-            "--patterns",
-            help=f"Matches paths with these patterns (separated by ' '). Defaults to: {Config.defaults.patterns}.",
-            nargs="*",
-            type=str,
-        )
-        parser.add_argument(
-            "-P",
-            "--ignore-patterns",
-            help=f"Ignores file changes in these patterns (separated by ' '). Defaults to: {Config.defaults.ignore_patterns}.",
-            nargs="*",
+            "-C",
+            "--config",
+            help=f"Path to the wutch config file. Defaults to: {Config.defaults.config}.",
             type=str,
         )
         parser.add_argument(
@@ -96,9 +88,16 @@ class Config(ilexconf.Config):
             type=str,
         )
         parser.add_argument(
-            "-D",
-            "--ignore-dirs",
-            help=f"Ignore file changes in these directories (separated by ' '). Defaults to: {Config.defaults.ignore_dirs}.",
+            "-p",
+            "--patterns",
+            help=f"Matches paths with these patterns (separated by ' '). Defaults to: {Config.defaults.patterns}.",
+            nargs="*",
+            type=str,
+        )
+        parser.add_argument(
+            "-P",
+            "--ignore-patterns",
+            help=f"Ignores changes in files that match these patterns (separated by ' '). Defaults to: {Config.defaults.ignore_patterns}.",
             nargs="*",
             type=str,
         )
